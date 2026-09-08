@@ -1,6 +1,8 @@
 # AI Approval Queue
 
-**Demo video: <!-- paste your video link here -->**
+**Demo video: [Watch the walkthrough](https://www.youtube.com/watch?v=xDzkYxgHbyM)**
+
+Turn captions on. The walkthrough is captioned rather than narrated.
 
 Runs locally. Setup is below and takes a couple of minutes if you already have
 a Supabase project and a Gemini API key.
