@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { DemoTriggers } from '@/components/demo-triggers'
+import { NavLink } from '@/components/nav-link'
 
 const STEPS = [
   {
@@ -51,12 +52,12 @@ export default async function LandingPage() {
 
           <nav className="flex items-center gap-3">
             {user ? (
-              <Link
+              <NavLink
                 href="/admin/queue"
                 className="rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
               >
                 Open queue
-              </Link>
+              </NavLink>
             ) : (
               <Link
                 href="/login"

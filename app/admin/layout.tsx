@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { SignOutButton } from '@/components/sign-out-button'
+import { NavLink } from '@/components/nav-link'
 
 export default async function AdminLayout({
   children,
@@ -36,18 +37,18 @@ export default async function AdminLayout({
           </Link>
 
           <nav className="flex gap-6 text-sm font-medium">
-            <Link
+            <NavLink
               href="/admin/queue"
               className="text-muted transition-colors hover:text-foreground"
             >
               Queue
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               href="/admin/audit"
               className="text-muted transition-colors hover:text-foreground"
             >
               Audit log
-            </Link>
+            </NavLink>
           </nav>
 
           <div className="ml-auto flex items-center gap-4 text-sm">
