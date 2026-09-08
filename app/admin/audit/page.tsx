@@ -76,22 +76,22 @@ export default async function AuditPage({
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h1 className="text-2xl font-semibold tracking-tight">Audit log</h1>
-        <p className="text-sm text-slate-500">{total} entries</p>
+        <h1 className="font-display text-3xl font-bold">Audit log</h1>
+        <p className="font-mono text-sm text-muted">{total} entries</p>
       </div>
 
       {error && (
-        <p className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        <p className="rounded-2xl border border-border bg-danger-subtle px-4 py-3 text-sm text-danger">
           Could not load the audit log: {error.message}
         </p>
       )}
 
       {!error && rows.length === 0 && (
-        <div className="rounded-lg border border-dashed border-slate-300 bg-white px-6 py-12 text-center">
-          <p className="font-medium">No entries yet</p>
-          <p className="mt-1 text-sm text-slate-600">
+        <div className="rounded-2xl border border-dashed border-border bg-card px-6 py-16 text-center">
+          <p className="font-display text-lg font-semibold">No entries yet</p>
+          <p className="mt-2 text-sm text-muted">
             Approve or reject something in the{' '}
-            <Link href="/admin/queue" className="text-blue-600 hover:underline">
+            <Link href="/admin/queue" className="text-accent transition-colors hover:text-accent-hover">
               queue
             </Link>{' '}
             and it will show up here.
@@ -100,9 +100,9 @@ export default async function AuditPage({
       )}
 
       {rows.length > 0 && (
-        <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
+        <div className="overflow-x-auto rounded-2xl border border-border bg-card">
           <table className="w-full min-w-[720px] text-left text-sm">
-            <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+            <thead className="border-b border-border bg-subtle text-xs uppercase tracking-wider text-muted">
               <tr>
                 <th className="px-4 py-3 font-medium">Timestamp</th>
                 <th className="px-4 py-3 font-medium">Actor</th>
@@ -111,27 +111,27 @@ export default async function AuditPage({
                 <th className="px-4 py-3 font-medium">Metadata</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-border">
               {rows.map((row) => (
                 <tr key={row.id}>
-                  <td className="whitespace-nowrap px-4 py-3 text-slate-500">
+                  <td className="whitespace-nowrap px-4 py-3 font-mono text-xs text-muted">
                     {formatTimestamp(row.ts)}
                   </td>
                   <td className="whitespace-nowrap px-4 py-3">
                     {row.actor_id ? actorEmails[row.actor_id] ?? row.actor_id : '—'}
                   </td>
-                  <td className="whitespace-nowrap px-4 py-3 font-mono text-xs text-slate-800">
+                  <td className="whitespace-nowrap px-4 py-3 font-mono text-xs text-accent">
                     {row.action}
                   </td>
-                  <td className="whitespace-nowrap px-4 py-3 text-slate-600">
+                  <td className="whitespace-nowrap px-4 py-3 text-muted">
                     {row.entity}
                     {row.entity_id && (
-                      <span className="ml-1 font-mono text-xs text-slate-400">
+                      <span className="ml-1 font-mono text-xs text-muted/60">
                         {row.entity_id.slice(0, 8)}
                       </span>
                     )}
                   </td>
-                  <td className="px-4 py-3 font-mono text-xs text-slate-600">
+                  <td className="px-4 py-3 font-mono text-xs text-muted">
                     {row.metadata ? JSON.stringify(row.metadata) : '—'}
                   </td>
                 </tr>
@@ -146,24 +146,24 @@ export default async function AuditPage({
           <Link
             href={`/admin/audit?page=${page - 1}`}
             aria-disabled={page <= 1}
-            className={`rounded-md border px-3 py-1.5 ${
+            className={`rounded-full border px-4 py-2 font-medium transition-colors ${
               page <= 1
-                ? 'pointer-events-none border-slate-200 text-slate-300'
-                : 'border-slate-300 text-slate-700 hover:bg-slate-100'
+                ? 'pointer-events-none border-border text-muted/40'
+                : 'border-border hover:bg-subtle'
             }`}
           >
             Previous
           </Link>
-          <span className="text-slate-500">
+          <span className="font-mono text-muted">
             Page {page} of {totalPages}
           </span>
           <Link
             href={`/admin/audit?page=${page + 1}`}
             aria-disabled={page >= totalPages}
-            className={`rounded-md border px-3 py-1.5 ${
+            className={`rounded-full border px-4 py-2 font-medium transition-colors ${
               page >= totalPages
-                ? 'pointer-events-none border-slate-200 text-slate-300'
-                : 'border-slate-300 text-slate-700 hover:bg-slate-100'
+                ? 'pointer-events-none border-border text-muted/40'
+                : 'border-border hover:bg-subtle'
             }`}
           >
             Next

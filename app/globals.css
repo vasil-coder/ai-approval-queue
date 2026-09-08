@@ -1,10 +1,71 @@
 @import "tailwindcss";
 
+/*
+ * Palette and type scale modelled on spacecraftersuniverse.com:
+ * warm off-white ground, warm near-black ink, terracotta accent.
+ */
+:root {
+  --background: #faf9f7;
+  --foreground: #131110;
+  --card: #ffffff;
+  --muted: #6d6863;
+  --subtle: #f1efec;
+  --border: #e5e2dc;
+
+  --primary: #131110;
+  --primary-hover: #33302c;
+  --primary-foreground: #faf9f7;
+
+  --accent: #ef562c;
+  --accent-hover: #d64818;
+  --accent-foreground: #ffffff;
+
+  --success: #009767;
+  --success-hover: #007956;
+  --danger: #b93815;
+  --danger-subtle: #fdf4ef;
+
+  --space: #0e0d0b;
+  --space-foreground: #f6f4f1;
+}
+
 @theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-border: var(--border);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-success: var(--success);
+  --color-success-hover: var(--success-hover);
+  --color-danger: var(--danger);
+  --color-danger-subtle: var(--danger-subtle);
+
+  --color-space: var(--space);
+  --color-space-foreground: var(--space-foreground);
+
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-ibm-plex-mono), ui-monospace, "SFMono-Regular", Menlo,
+    monospace;
 }
 
 body {
-  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.02em;
 }

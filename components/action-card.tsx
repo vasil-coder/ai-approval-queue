@@ -26,82 +26,82 @@ export function ActionCard({ action }: { action: QueueAction }) {
   }
 
   return (
-    <article className="overflow-hidden rounded-lg border border-slate-200 bg-white">
+    <article className="overflow-hidden rounded-2xl border border-border bg-card">
       <div className="grid md:grid-cols-2">
         {/* LEFT — the inbound event */}
-        <div className="border-b border-slate-200 p-5 md:border-b-0 md:border-r">
+        <div className="border-b border-border p-6 md:border-b-0 md:border-r">
           <div className="flex items-center justify-between gap-2">
-            <span className="rounded bg-slate-100 px-2 py-0.5 font-mono text-xs text-slate-700">
+            <span className="rounded-full border border-border bg-subtle px-2.5 py-0.5 font-mono text-xs text-muted">
               {action.event?.source ?? 'unknown source'}
             </span>
-            <time className="text-xs text-slate-500">
+            <time className="font-mono text-xs text-muted">
               {formatTimestamp(action.event?.received_at ?? action.created_at)}
             </time>
           </div>
 
-          <h3 className="mt-4 text-sm font-medium text-slate-500">
+          <h3 className="mt-5 text-xs font-medium uppercase tracking-wider text-muted">
             Original event
           </h3>
-          <pre className="mt-2 max-h-72 overflow-auto rounded-md bg-slate-50 p-3 font-mono text-xs leading-relaxed text-slate-800">
+          <pre className="mt-3 max-h-72 overflow-auto rounded-xl border border-border bg-subtle p-4 font-mono text-xs leading-relaxed">
             {JSON.stringify(action.event?.payload ?? {}, null, 2)}
           </pre>
         </div>
 
         {/* RIGHT — what the AI proposes */}
-        <div className="p-5">
+        <div className="p-6">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700">
+            <span className="rounded-full bg-accent px-2.5 py-1 text-xs font-medium text-accent-foreground">
               {formatActionType(draft.action_type)}
             </span>
             {action.human_edits?.body && (
-              <span className="rounded bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700">
+              <span className="rounded-full border border-border bg-subtle px-2.5 py-1 text-xs font-medium text-muted">
                 edited
               </span>
             )}
           </div>
 
           <div className="mt-4">
-            <div className="flex items-center justify-between text-xs text-slate-500">
+            <div className="flex items-center justify-between text-xs text-muted">
               <span>AI confidence</span>
-              <span className="font-medium text-slate-900">
+              <span className="font-mono font-medium text-foreground">
                 {confidencePct}%
               </span>
             </div>
-            <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
+            <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-subtle">
               <div
-                className="h-full rounded-full bg-blue-600"
+                className="h-full rounded-full bg-accent"
                 style={{ width: `${confidencePct}%` }}
               />
             </div>
           </div>
 
-          <p className="mt-4 text-sm leading-relaxed text-slate-600">
-            <span className="font-medium text-slate-900">Reasoning: </span>
+          <p className="mt-5 text-sm leading-relaxed text-muted">
+            <span className="font-medium text-foreground">Reasoning: </span>
             {draft.reasoning}
           </p>
 
           {(draft.draft_content.to || draft.draft_content.subject) && (
-            <dl className="mt-4 space-y-1 text-xs">
+            <dl className="mt-5 space-y-1.5 text-xs">
               {draft.draft_content.to && (
                 <div className="flex gap-2">
-                  <dt className="w-14 shrink-0 text-slate-500">To</dt>
-                  <dd className="truncate font-mono text-slate-800">
+                  <dt className="w-16 shrink-0 text-muted">To</dt>
+                  <dd className="truncate font-mono text-foreground">
                     {draft.draft_content.to}
                   </dd>
                 </div>
               )}
               {draft.draft_content.subject && (
                 <div className="flex gap-2">
-                  <dt className="w-14 shrink-0 text-slate-500">Subject</dt>
-                  <dd className="text-slate-800">
+                  <dt className="w-16 shrink-0 text-muted">Subject</dt>
+                  <dd className="text-foreground">
                     {draft.draft_content.subject}
                   </dd>
                 </div>
               )}
               {draft.draft_content.amount != null && (
                 <div className="flex gap-2">
-                  <dt className="w-14 shrink-0 text-slate-500">Amount</dt>
-                  <dd className="font-mono text-slate-800">
+                  <dt className="w-16 shrink-0 text-muted">Amount</dt>
+                  <dd className="font-mono text-foreground">
                     ${draft.draft_content.amount}
                   </dd>
                 </div>
@@ -111,7 +111,7 @@ export function ActionCard({ action }: { action: QueueAction }) {
 
           <label
             htmlFor={`draft-${action.id}`}
-            className="mt-4 block text-sm font-medium text-slate-500"
+            className="mt-6 block text-xs font-medium uppercase tracking-wider text-muted"
           >
             Drafted content
           </label>
@@ -120,29 +120,29 @@ export function ActionCard({ action }: { action: QueueAction }) {
             value={body}
             onChange={(e) => setBody(e.target.value)}
             rows={8}
-            className="mt-2 w-full resize-y rounded-md border border-slate-300 p-3 font-mono text-xs leading-relaxed outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+            className="mt-3 w-full resize-y rounded-xl border border-border bg-background p-4 font-mono text-xs leading-relaxed outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent"
           />
         </div>
       </div>
 
       {error && (
-        <p className="border-t border-red-100 bg-red-50 px-5 py-2 text-sm text-red-700">
+        <p className="border-t border-border bg-danger-subtle px-6 py-2.5 text-sm text-danger">
           {error}
         </p>
       )}
 
-      <div className="flex flex-wrap items-center gap-3 border-t border-slate-200 bg-slate-50 px-5 py-3">
+      <div className="flex flex-wrap items-center gap-3 border-t border-border bg-subtle px-6 py-4">
         <button
           onClick={() => run(() => decideAction(action.id, 'approved'))}
           disabled={pending}
-          className="rounded-md bg-green-600 px-5 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50"
+          className="rounded-full bg-success px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-success-hover disabled:opacity-50"
         >
           Approve
         </button>
         <button
           onClick={() => run(() => decideAction(action.id, 'rejected'))}
           disabled={pending}
-          className="rounded-md bg-red-600 px-5 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50"
+          className="rounded-full border border-danger/30 px-6 py-2.5 text-sm font-medium text-danger transition-colors hover:bg-danger-subtle disabled:opacity-50"
         >
           Reject
         </button>
@@ -157,15 +157,15 @@ export function ActionCard({ action }: { action: QueueAction }) {
               })
             }
             disabled={pending}
-            className="rounded-md border border-slate-300 bg-white px-5 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 disabled:opacity-50"
+            className="rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover disabled:opacity-50"
           >
             Save edits
           </button>
         )}
 
-        {pending && <span className="text-sm text-slate-500">Working…</span>}
+        {pending && <span className="text-sm text-muted">Working…</span>}
         {!pending && isDirty && (
-          <span className="text-sm text-amber-700">Unsaved changes</span>
+          <span className="text-sm text-accent">Unsaved changes</span>
         )}
       </div>
     </article>

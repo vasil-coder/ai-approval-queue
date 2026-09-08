@@ -96,12 +96,19 @@ export function DemoTriggers() {
             key={event.key}
             onClick={() => trigger(event)}
             disabled={pending !== null}
-            className="rounded-lg border border-slate-200 bg-white p-5 text-left transition-colors hover:border-blue-600 disabled:opacity-50"
+            className="group rounded-2xl border border-border bg-card p-5 text-left transition-colors hover:border-accent disabled:opacity-50"
           >
-            <span className="block font-medium text-slate-900">
-              {pending === event.key ? 'Sending…' : event.label}
+            <span className="flex items-center justify-between gap-2">
+              <span className="font-display font-semibold">
+                {pending === event.key ? 'Sending…' : event.label}
+              </span>
+              <span className="text-accent opacity-0 transition-opacity group-hover:opacity-100">
+                &rarr;
+              </span>
             </span>
-            <span className="mt-1 block text-sm text-slate-600">{event.hint}</span>
+            <span className="mt-2 block text-sm leading-relaxed text-muted">
+              {event.hint}
+            </span>
           </button>
         ))}
       </div>
@@ -109,10 +116,10 @@ export function DemoTriggers() {
       {toast && (
         <div
           role="status"
-          className={`fixed inset-x-4 bottom-4 z-50 rounded-lg px-4 py-3 text-sm shadow-lg sm:left-auto sm:right-6 sm:max-w-md ${
+          className={`fixed inset-x-4 bottom-4 z-50 rounded-2xl px-4 py-3 text-sm shadow-lg sm:left-auto sm:right-6 sm:max-w-md ${
             toast.tone === 'ok'
-              ? 'bg-slate-900 text-white'
-              : 'bg-red-600 text-white'
+              ? 'bg-primary text-primary-foreground'
+              : 'bg-accent text-accent-foreground'
           }`}
         >
           {toast.message}

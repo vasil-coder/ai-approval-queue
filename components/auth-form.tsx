@@ -64,15 +64,15 @@ export function AuthForm({ mode, next }: { mode: Mode; next?: string }) {
       <div className="w-full max-w-sm">
         <Link
           href="/"
-          className="mb-8 block text-sm text-slate-500 hover:text-slate-900"
+          className="mb-8 inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-foreground"
         >
           &larr; AI Approval Queue
         </Link>
 
-        <h1 className="text-2xl font-semibold tracking-tight">
+        <h1 className="font-display text-3xl font-bold">
           {isLogin ? 'Sign in' : 'Create an account'}
         </h1>
-        <p className="mt-2 text-sm text-slate-600">
+        <p className="mt-3 text-muted">
           {isLogin
             ? 'Access the approval queue and audit log.'
             : 'New accounts are granted the admin role.'}
@@ -82,7 +82,7 @@ export function AuthForm({ mode, next }: { mode: Mode; next?: string }) {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-slate-700"
+              className="block text-sm font-medium"
             >
               Email
             </label>
@@ -93,14 +93,14 @@ export function AuthForm({ mode, next }: { mode: Mode; next?: string }) {
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+              className="mt-2 w-full rounded-xl border border-border bg-card px-3.5 py-2.5 outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent"
             />
           </div>
 
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-slate-700"
+              className="block text-sm font-medium"
             >
               Password
             </label>
@@ -112,17 +112,17 @@ export function AuthForm({ mode, next }: { mode: Mode; next?: string }) {
               autoComplete={isLogin ? 'current-password' : 'new-password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+              className="mt-2 w-full rounded-xl border border-border bg-card px-3.5 py-2.5 outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent"
             />
           </div>
 
           {error && (
-            <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+            <p className="rounded-xl bg-danger-subtle px-3.5 py-2.5 text-sm text-danger">
               {error}
             </p>
           )}
           {notice && (
-            <p className="rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-800">
+            <p className="rounded-xl bg-subtle px-3.5 py-2.5 text-sm text-foreground">
               {notice}
             </p>
           )}
@@ -130,19 +130,19 @@ export function AuthForm({ mode, next }: { mode: Mode; next?: string }) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-md bg-blue-600 px-4 py-2.5 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+            className="w-full rounded-full bg-primary px-4 py-3 font-medium text-primary-foreground transition-colors hover:bg-primary-hover disabled:opacity-50"
           >
             {loading ? 'Working…' : isLogin ? 'Sign in' : 'Create account'}
           </button>
         </form>
 
-        <p className="mt-6 text-sm text-slate-600">
+        <p className="mt-8 text-sm text-muted">
           {isLogin ? (
             <>
               No account?{' '}
               <Link
                 href="/signup"
-                className="font-medium text-blue-600 hover:underline"
+                className="font-medium text-accent transition-colors hover:text-accent-hover"
               >
                 Sign up
               </Link>
@@ -152,7 +152,7 @@ export function AuthForm({ mode, next }: { mode: Mode; next?: string }) {
               Already have an account?{' '}
               <Link
                 href="/login"
-                className="font-medium text-blue-600 hover:underline"
+                className="font-medium text-accent transition-colors hover:text-accent-hover"
               >
                 Sign in
               </Link>

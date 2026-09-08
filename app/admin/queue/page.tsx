@@ -23,26 +23,24 @@ export default async function QueuePage() {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Pending approvals
-        </h1>
-        <p className="text-sm text-slate-500">
+        <h1 className="font-display text-3xl font-bold">Pending approvals</h1>
+        <p className="font-mono text-sm text-muted">
           {actions.length} awaiting review
         </p>
       </div>
 
       {error && (
-        <p className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        <p className="rounded-2xl border border-border bg-danger-subtle px-4 py-3 text-sm text-danger">
           Could not load the queue: {error.message}
         </p>
       )}
 
       {!error && actions.length === 0 && (
-        <div className="rounded-lg border border-dashed border-slate-300 bg-white px-6 py-12 text-center">
-          <p className="font-medium">Nothing pending</p>
-          <p className="mt-1 text-sm text-slate-600">
+        <div className="rounded-2xl border border-dashed border-border bg-card px-6 py-16 text-center">
+          <p className="font-display text-lg font-semibold">Nothing pending</p>
+          <p className="mt-2 text-sm text-muted">
             Trigger a demo event from the{' '}
-            <Link href="/" className="text-blue-600 hover:underline">
+            <Link href="/" className="text-accent transition-colors hover:text-accent-hover">
               landing page
             </Link>{' '}
             to see the AI draft an action.
