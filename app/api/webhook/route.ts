@@ -1,4 +1,4 @@
-import { GoogleGenAI } from '@google/genai'
+import { GoogleGenAI, ThinkingLevel } from '@google/genai'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { isActionType, type AiDraft, type DraftContent } from '@/lib/types'
@@ -23,6 +23,35 @@ Return ONLY valid JSON matching this exact schema:
 }
 
 Do not include any text before or after the JSON.`
+
+/**
+ * Gemini occasionally answers 503 (overloaded) or 429 (free-tier rate limit).
+ * Both clear on their own, so retry briefly rather than failing the request.
+ * Kept short so a bad call never blocks the UI for long.
+ */
+async function generateWithRetry(
+  ai: GoogleGenAI,
+  request: Parameters<GoogleGenAI['models']['generateContent']>[0],
+  attempts = 3
+) {
+  let lastError: unknown
+  for (let i = 0; i < attempts; i++) {
+    try {
+      return await ai.models.generateContent(request)
+    } catch (err) {
+      lastError = err
+      const message = err instanceof Error ? err.message : String(err)
+      const transient =
+        message.includes('429') ||
+        message.includes('503') ||
+        message.includes('500') ||
+        /overloaded|high demand/i.test(message)
+      if (!transient || i === attempts - 1) throw err
+      await new Promise((resolve) => setTimeout(resolve, 500 * (i + 1)))
+    }
+  }
+  throw lastError
+}
 
 function clientIp(req: Request): string {
   const forwarded = req.headers.get('x-forwarded-for')
@@ -168,12 +197,16 @@ export async function POST(req: Request) {
     let rawText: string
     try {
       const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! })
-      const response = await ai.models.generateContent({
+      const response = await generateWithRetry(ai, {
         model: 'gemini-3.6-flash',
         contents: JSON.stringify({ source, payload }),
         config: {
           systemInstruction: SYSTEM_PROMPT,
           responseMimeType: 'application/json',
+          // Without this the model reasons before answering and the call takes
+          // ~27s. Triage doesn't need it, and 'minimal' brings it under 2s.
+          // Note: thinkingBudget (the older param) is rejected by this model.
+          thinkingConfig: { thinkingLevel: ThinkingLevel.MINIMAL },
         },
       })
       rawText = response.text ?? ''
