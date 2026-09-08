@@ -1,8 +1,9 @@
 # AI Approval Queue
 
-**Live demo: https://ai-approval-queue.vercel.app**
-Click a trigger button on the landing page to watch it work. No login needed to
-send an event. Sign in to review and approve what the model drafted.
+**Demo video: <!-- paste your video link here -->**
+
+Runs locally. Setup is below and takes a couple of minutes if you already have
+a Supabase project and a Gemini API key.
 
 A human-in-the-loop approval layer for AI actions. Something comes in, a model
 drafts a response, and nothing at all happens until a person signs off on it.
