@@ -3,7 +3,7 @@ import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 /**
  * Service-role client. Bypasses Row Level Security.
  *
- * Only import this from Route Handlers or Server Actions — never from a
+ * Only import this from Route Handlers or Server Actions, never from a
  * component that ships to the browser. The webhook needs it because inbound
  * events arrive unauthenticated and RLS grants no insert to anon.
  */

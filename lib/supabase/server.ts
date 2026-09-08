@@ -18,8 +18,8 @@ export async function createClient() {
               cookieStore.set(name, value, options)
             })
           } catch {
-            // Server Components can't set cookies. Safe to ignore — the
-            // middleware refreshes the session on every request instead.
+            // Server Components can't set cookies. Safe to ignore, since
+            // the proxy refreshes the session on every request anyway.
           }
         },
       },

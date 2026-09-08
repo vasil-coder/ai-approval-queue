@@ -6,17 +6,17 @@ const STEPS = [
   {
     n: '01',
     title: 'Event arrives',
-    body: 'A form submission, ticket, or portal request hits the webhook.',
+    body: 'Something comes in. A form, a support ticket, a refund request. It hits the webhook.',
   },
   {
     n: '02',
-    title: 'AI drafts, nothing sends',
-    body: 'The model proposes the next action with a confidence score and its reasoning. It stays pending.',
+    title: 'The model writes a draft',
+    body: 'It picks an action type, scores how sure it is, and says why. Then it waits.',
   },
   {
     n: '03',
     title: 'A human decides',
-    body: 'An admin edits, approves, or rejects. Only then does anything execute — and the decision is logged.',
+    body: 'Edit it, approve it, or throw it out. Whatever you pick gets written to the log.',
   },
 ]
 
@@ -83,13 +83,13 @@ export default async function LandingPage() {
           </h1>
 
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">
-            Most companies won&apos;t let AI touch a customer, because one bad
-            send is expensive and untraceable. This is the layer that fixes
-            that: every inbound event gets an AI-drafted response with a visible
-            confidence score and stated reasoning, but nothing executes until a
-            person reviews it. Every approval, edit, and rejection is written to
-            an immutable audit log — so you can deploy AI where mistakes cost
-            money, and still answer &ldquo;who decided this, and why?&rdquo;
+            Most teams won&apos;t let AI near their customers, and they have a
+            point. One bad send costs money and afterwards nobody can explain
+            what happened. So this sits in between. Every event that comes in
+            gets a drafted response with a confidence score and the reasoning
+            behind it. Nothing goes out until someone signs off, and every
+            approval, edit and rejection lands in an audit log you can actually
+            read.
           </p>
         </section>
 
@@ -97,12 +97,12 @@ export default async function LandingPage() {
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
               <h2 className="font-display text-2xl font-bold">
-                Trigger a demo event
+                Try it yourself
               </h2>
               <p className="mt-2 max-w-xl text-muted">
-                Each button posts a realistic payload to the live webhook. The
-                model drafts an action, and it lands in the approval queue as
-                pending.
+                Each button sends a real payload to the webhook. The model
+                drafts a response and it shows up in the queue, waiting for
+                someone to review it.
               </p>
             </div>
             {!user && (

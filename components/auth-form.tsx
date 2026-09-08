@@ -17,7 +17,7 @@ export function AuthForm({ mode, next }: { mode: Mode; next?: string }) {
 
   const isLogin = mode === 'login'
 
-  // Only allow same-app redirects — never trust ?next= from the URL bar.
+  // Only allow same-app redirects. Never trust ?next= from the URL bar.
   const destination = next?.startsWith('/admin') ? next : '/admin/queue'
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -48,7 +48,7 @@ export function AuthForm({ mode, next }: { mode: Mode; next?: string }) {
       // Email confirmation is on: no session yet, so there's nowhere to go.
       if (!data.session) {
         setNotice(
-          'Account created. Check your email for a confirmation link, then sign in.'
+          'Account created. Check your email for the confirmation link, then sign in.'
         )
         setLoading(false)
         return
@@ -74,8 +74,8 @@ export function AuthForm({ mode, next }: { mode: Mode; next?: string }) {
         </h1>
         <p className="mt-3 text-muted">
           {isLogin
-            ? 'Access the approval queue and audit log.'
-            : 'New accounts are granted the admin role.'}
+            ? 'Review what the AI drafted and decide what goes out.'
+            : 'New accounts get admin access.'}
         </p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">

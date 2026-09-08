@@ -4,12 +4,12 @@ import { NextResponse, type NextRequest } from 'next/server'
 /**
  * Refreshes the Supabase auth session on every request and guards /admin/*.
  *
- * Called from the root proxy.ts (formerly middleware.ts — Next 16 renamed the
- * file convention).
+ * Called from the root proxy.ts (this used to be middleware.ts before Next 16
+ * renamed the file convention).
  *
  * Two rules to preserve if you edit this:
  *  1. Nothing may run between createServerClient() and getUser().
- *  2. Always return the `response` object that setAll() rewrote — building a
+ *  2. Always return the `response` object that setAll() rewrote. Building a
  *     fresh NextResponse drops the refreshed cookies and logs the user out.
  */
 export async function updateSession(request: NextRequest) {

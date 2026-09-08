@@ -6,7 +6,7 @@ const DEMO_EVENTS = [
   {
     key: 'sales',
     label: 'Sales inquiry',
-    hint: 'Enterprise plan question from a 200-person company',
+    hint: 'A 200-person company asking about enterprise pricing',
     body: {
       source: 'web_form',
       payload: {
@@ -19,7 +19,7 @@ const DEMO_EVENTS = [
   {
     key: 'support',
     label: 'Support ticket',
-    hint: 'Frustrated customer, order lost in transit',
+    hint: 'Angry customer whose order never turned up',
     body: {
       source: 'support_form',
       payload: {
@@ -32,7 +32,7 @@ const DEMO_EVENTS = [
   {
     key: 'refund',
     label: 'Refund request',
-    hint: '$149.00 warranty claim on a broken product',
+    hint: 'A $149 warranty claim on something that broke',
     body: {
       source: 'customer_portal',
       payload: {
@@ -78,11 +78,11 @@ export function DemoTriggers() {
       }
 
       setToast({
-        message: 'Event received, AI drafting action… check the queue',
+        message: 'Got it. The model is drafting now, check the queue.',
         tone: 'ok',
       })
     } catch {
-      setToast({ message: 'Network error — is the dev server running?', tone: 'error' })
+      setToast({ message: 'Network error. Is the server running?', tone: 'error' })
     } finally {
       setPending(null)
     }

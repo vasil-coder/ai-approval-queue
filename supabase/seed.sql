@@ -1,5 +1,5 @@
 -- ============================================================
--- AI Approval Queue — demo seed data
+-- AI Approval Queue: demo seed data
 -- Run AFTER schema.sql, and AFTER you have signed up at least once.
 -- Run in: Supabase Dashboard > SQL Editor > New query
 -- Safe to re-run (fixed UUIDs + on conflict do nothing).
@@ -11,7 +11,7 @@
 
 -- Attributed to your first (oldest) signed-up user.
 -- If no user exists yet, approver_id/actor_id land as NULL and the audit
--- page shows a dash — sign up first to avoid that.
+-- page shows a dash, so sign up first to avoid that.
 
 insert into events (id, source, payload, received_at) values
   (

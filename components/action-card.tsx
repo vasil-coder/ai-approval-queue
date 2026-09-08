@@ -28,7 +28,7 @@ export function ActionCard({ action }: { action: QueueAction }) {
   return (
     <article className="overflow-hidden rounded-2xl border border-border bg-card">
       <div className="grid md:grid-cols-2">
-        {/* LEFT — the inbound event */}
+        {/* LEFT: the event that came in */}
         <div className="border-b border-border p-6 md:border-b-0 md:border-r">
           <div className="flex items-center justify-between gap-2">
             <span className="rounded-full border border-border bg-subtle px-2.5 py-0.5 font-mono text-xs text-muted">
@@ -47,7 +47,7 @@ export function ActionCard({ action }: { action: QueueAction }) {
           </pre>
         </div>
 
-        {/* RIGHT — what the AI proposes */}
+        {/* RIGHT: what the AI wants to do about it */}
         <div className="p-6">
           <div className="flex flex-wrap items-center gap-2">
             <span className="rounded-full bg-accent px-2.5 py-1 text-xs font-medium text-accent-foreground">

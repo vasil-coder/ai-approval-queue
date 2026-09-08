@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { ActionCard } from '@/components/action-card'
 import type { QueueAction } from '@/lib/types'
 
-// Approvals must show up immediately, so never serve this from the cache.
+// Approvals need to show up straight away, so don't cache this.
 export const dynamic = 'force-dynamic'
 
 export default async function QueuePage() {
@@ -39,11 +39,11 @@ export default async function QueuePage() {
         <div className="rounded-2xl border border-dashed border-border bg-card px-6 py-16 text-center">
           <p className="font-display text-lg font-semibold">Nothing pending</p>
           <p className="mt-2 text-sm text-muted">
-            Trigger a demo event from the{' '}
+            Head over to the{' '}
             <Link href="/" className="text-accent transition-colors hover:text-accent-hover">
               landing page
             </Link>{' '}
-            to see the AI draft an action.
+            and trigger a demo event to see a draft land here.
           </p>
         </div>
       )}

@@ -1,5 +1,5 @@
 -- ============================================================
--- AI Approval Queue — database schema
+-- AI Approval Queue: database schema
 -- Run in: Supabase Dashboard > SQL Editor > New query
 -- Safe to re-run.
 -- ============================================================
@@ -67,7 +67,7 @@ alter table profiles    enable row level security;
 alter table rate_limits enable row level security;
 
 -- profiles: a user can read their own row.
--- REQUIRED — every policy below subqueries this table as the calling user.
+-- REQUIRED. Every policy below subqueries this table as the calling user.
 -- Without it, RLS on profiles denies the subquery and all other policies
 -- silently evaluate to false.
 drop policy if exists "users read own profile" on profiles;

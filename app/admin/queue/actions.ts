@@ -9,8 +9,8 @@ export type ActionResult = { ok: true } | { ok: false; error: string }
 type Decision = 'approved' | 'rejected'
 
 /**
- * What executing this action *would* do. Nothing is actually sent — this
- * string is written to the audit log so the demo shows the full loop.
+ * What running this action would actually do. Nothing gets sent. The string
+ * just goes into the audit log so the demo shows the whole loop.
  */
 function describeExecution(draft: AiDraft, body: string): string {
   const { to, subject, amount } = draft.draft_content
@@ -27,7 +27,7 @@ function describeExecution(draft: AiDraft, body: string): string {
     case 'escalate':
       return 'Would escalate to a human specialist'
     case 'no_action':
-      return 'No action taken — closed without response'
+      return 'No action taken, closed without a response'
     default:
       return 'Would execute action'
   }
@@ -65,7 +65,7 @@ export async function decideAction(
       approver_id: user.id,
     })
     .eq('id', actionId)
-    .eq('status', 'pending') // no-op if someone else decided it first
+    .eq('status', 'pending') // no-op if someone else already decided it
 
   if (updateError) return { ok: false, error: updateError.message }
 
@@ -124,8 +124,8 @@ export async function saveEdits(
 
   if (updateError) return { ok: false, error: updateError.message }
 
-  // An edit is a human decision too — the audit log should show that a person
-  // changed what the AI wrote, not just that they approved it.
+  // An edit is a decision too. The log should show that a person changed
+  // what the AI wrote, not just that they approved it.
   await supabase.from('audit_log').insert({
     actor_id: user.id,
     action: 'edit_draft',

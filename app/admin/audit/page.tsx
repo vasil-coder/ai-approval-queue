@@ -19,7 +19,7 @@ type AuditRow = {
 
 /**
  * auth.users isn't exposed through PostgREST, so actor emails can't be
- * joined in the main query — fetch them separately with the admin client
+ * joined in the main query. Fetch them separately with the admin client
  * and map by id instead.
  */
 async function fetchActorEmails(
@@ -94,7 +94,7 @@ export default async function AuditPage({
             <Link href="/admin/queue" className="text-accent transition-colors hover:text-accent-hover">
               queue
             </Link>{' '}
-            and it will show up here.
+            and it shows up here.
           </p>
         </div>
       )}
@@ -118,7 +118,7 @@ export default async function AuditPage({
                     {formatTimestamp(row.ts)}
                   </td>
                   <td className="whitespace-nowrap px-4 py-3">
-                    {row.actor_id ? actorEmails[row.actor_id] ?? row.actor_id : '—'}
+                    {row.actor_id ? actorEmails[row.actor_id] ?? row.actor_id : '-'}
                   </td>
                   <td className="whitespace-nowrap px-4 py-3 font-mono text-xs text-accent">
                     {row.action}
@@ -132,7 +132,7 @@ export default async function AuditPage({
                     )}
                   </td>
                   <td className="px-4 py-3 font-mono text-xs text-muted">
-                    {row.metadata ? JSON.stringify(row.metadata) : '—'}
+                    {row.metadata ? JSON.stringify(row.metadata) : '-'}
                   </td>
                 </tr>
               ))}
