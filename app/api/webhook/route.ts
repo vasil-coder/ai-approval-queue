@@ -25,31 +25,54 @@ Return ONLY valid JSON matching this exact schema:
 Do not include any text before or after the JSON.`
 
 /**
- * Gemini occasionally answers 503 (overloaded) or 429 (free-tier rate limit).
- * Both clear on their own, so retry briefly rather than failing the request.
- * Kept short so a bad call never blocks the UI for long.
+ * Models to try, in order. Each one has its own separate free-tier daily
+ * quota, so when the first is exhausted (429) the next still has budget.
+ * They also return 503 under load fairly often, which clears on a retry.
  */
-async function generateWithRetry(
-  ai: GoogleGenAI,
-  request: Parameters<GoogleGenAI['models']['generateContent']>[0],
-  attempts = 3
-) {
+const MODELS = ['gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.8-flash']
+
+/**
+ * Ask for a draft, working down MODELS until one answers.
+ *
+ * A 429 means that model is out of quota for the day, so move straight on.
+ * A 503 means it is busy, so retry it once before giving up on it.
+ */
+async function generateDraft(ai: GoogleGenAI, contents: string) {
   let lastError: unknown
-  for (let i = 0; i < attempts; i++) {
-    try {
-      return await ai.models.generateContent(request)
-    } catch (err) {
-      lastError = err
-      const message = err instanceof Error ? err.message : String(err)
-      const transient =
-        message.includes('429') ||
-        message.includes('503') ||
-        message.includes('500') ||
-        /overloaded|high demand/i.test(message)
-      if (!transient || i === attempts - 1) throw err
-      await new Promise((resolve) => setTimeout(resolve, 500 * (i + 1)))
+
+  for (const model of MODELS) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        return await ai.models.generateContent({
+          model,
+          contents,
+          config: {
+            systemInstruction: SYSTEM_PROMPT,
+            responseMimeType: 'application/json',
+            // Left unset, the model reasons at full depth and a triage call
+            // takes ~27s. MEDIUM keeps the drafts good at around 3-4s.
+            // Note: thinkingBudget (the older param) is rejected here.
+            thinkingConfig: { thinkingLevel: ThinkingLevel.MEDIUM },
+          },
+        })
+      } catch (err) {
+        lastError = err
+        const message = err instanceof Error ? err.message : String(err)
+
+        // Out of daily quota on this model. Nothing to wait for.
+        if (message.includes('429')) break
+
+        const busy =
+          message.includes('503') ||
+          message.includes('500') ||
+          /overloaded|high demand/i.test(message)
+        if (!busy) throw err
+
+        if (attempt === 0) await new Promise((r) => setTimeout(r, 400))
+      }
     }
   }
+
   throw lastError
 }
 
@@ -197,18 +220,10 @@ export async function POST(req: Request) {
     let rawText: string
     try {
       const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! })
-      const response = await generateWithRetry(ai, {
-        model: 'gemini-3.6-flash',
-        contents: JSON.stringify({ source, payload }),
-        config: {
-          systemInstruction: SYSTEM_PROMPT,
-          responseMimeType: 'application/json',
-          // Without this the model reasons before answering and the call takes
-          // ~27s. Triage doesn't need it, and 'minimal' brings it under 2s.
-          // Note: thinkingBudget (the older param) is rejected by this model.
-          thinkingConfig: { thinkingLevel: ThinkingLevel.MINIMAL },
-        },
-      })
+      const response = await generateDraft(
+        ai,
+        JSON.stringify({ source, payload })
+      )
       rawText = response.text ?? ''
     } catch (err) {
       console.error('[webhook] Gemini request failed:', err)
